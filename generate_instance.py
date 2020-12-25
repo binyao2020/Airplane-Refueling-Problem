@@ -20,7 +20,7 @@ def generate_instance(n, sigma, seed):
     p = list(np.random.randint(1,100,n))
     instance = []
     for i in p:
-        instance.append((i,2**(np.random.normal(0,sigma))*i))
+        instance.append((i,2**(np.random.normal(0,sigma))*i)) # consumption rate & volume
     return instance
 
 #S1
