@@ -18,5 +18,5 @@ def get_structured_instance(instance, epsilon):
     structured_instance = []
     for plane in instance:
         rounded_cr = (1+epsilon)**(ceil(log(plane[1],1+epsilon)))
-        structured_instance.append((plane[0],rounded_cr))
+        structured_instance.append((rounded_cr,plane[0]))
     return structured_instance
