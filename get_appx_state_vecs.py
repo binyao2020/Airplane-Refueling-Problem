@@ -51,7 +51,7 @@ def get_appx_state_vecs(n, L, epsilon, D_hat, N): # biggest vector N is used for
     count = 0
     # remove vectors that exceeds the bound
     for j in range(len(appx_state_vecs)):
-        if np.dot(appx_state_vecs[j],cr_list) > bound:
+        if np.dot(appx_state_vecs[count],cr_list) > bound:
             appx_state_vecs.pop(count)
         else:
             count += 1
