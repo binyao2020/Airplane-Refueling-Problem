@@ -15,6 +15,6 @@ It returns a structured instance of the airplane refueling problem based on epsi
 def get_structured_instance(instance, epsilon):
     structured_instance = []
     for plane in instance:
-        rounded_cr = (1+epsilon)**(ceil(log(plane[1],1+epsilon)))
-        structured_instance.append((rounded_cr,plane[0]))
+        rounded_cr = (1+epsilon)**(ceil(log(plane[0],1+epsilon)))
+        structured_instance.append((rounded_cr,plane[1]))
     return structured_instance
