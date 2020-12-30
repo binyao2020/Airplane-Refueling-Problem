@@ -3,9 +3,8 @@
 """
 Created on Thu Dec 10 23:12:17 2020
 
-"""
+@author: Yinghan
 
-"""
 This function takes as input a value n = number of airplanes, and 
 sigma = variance to be used in the normal distribution while generating an instance.
 
