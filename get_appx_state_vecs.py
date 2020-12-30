@@ -5,7 +5,7 @@ Created on Thu Dec 24 19:02:51 2020
 
 @author: binyao
 
-This function takes as values n, L, D_hat, epsilon, and returns a set of vectors such that each vector N
+This function takes as values D_hat, epsilon, max_N, and returns a set of vectors such that each vector N
 in [n]^L and satisfies \sum_{p=1}^L N(p) * (1 + epsilon)^p <= (1 + epsilon) * D_hat
 """
 
