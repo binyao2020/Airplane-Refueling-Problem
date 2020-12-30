@@ -20,23 +20,25 @@ def get_max_vec(instace,epsilon): # return the vector corresponds to the instanc
     class_list = [] #records the type of each plane
     N = [] # number of planes for each class
     for j in range(len(instance)):
+        #print(cr_list[j],log(cr_list[j],1+epsilon))
         class_list.append(floor(log(cr_list[j],1+epsilon))) #plane -> class
     for i in range(r):
         N.append(class_list.count(i))
-    return N 
+    return N
 
-def get_appx_state_vecs(n, L, epsilon, D_hat, N): # biggest vector N is used for boundness
+def get_appx_state_vecs(epsilon, D_hat, N): # biggest vector N is used for boundness
     '''requires 
     from itertools import *
     import numpy as np
     '''
     # generate all vectors precedes N
+    L = len(N)
     appx_state_vecs = []
     bound = (1 + epsilon) * D_hat
     cr_list = np.array([(1+epsilon)**i for i in range(1,L+1)]) # list of consumption rate for each class
     bound_list = np.array([min(N[i],floor(bound/cr_list[i])) for i in range(L)]) # the bound for number of planes for each class
-    appx_state_vecs = list(range(bound_list[0]+1)) 
-    for i in range(1,len(N)):
+    appx_state_vecs = list(range(bound_list[0]+1)) # initialization
+    for i in range(1,L):
         l = list(range(bound_list[i]+1))
         appx_state_vecs = list(product(appx_state_vecs,l))
         for j in range(len(appx_state_vecs)):
@@ -54,3 +56,8 @@ def get_appx_state_vecs(n, L, epsilon, D_hat, N): # biggest vector N is used for
         else:
             count += 1
     return appx_state_vecs
+
+instance = [(1,20),(2,10),(4,5)]
+epsilon = sqrt(2)-1
+print(get_max_vec(instance,epsilon))
+print(get_appx_state_vecs(epsilon, D_hat, N))
