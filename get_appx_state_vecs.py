@@ -5,14 +5,9 @@ Created on Thu Dec 24 19:02:51 2020
 
 @author: binyao
 
-This function takes as values D_hat, epsilon, max_N, and returns a set of vectors such that each vector N
+This function takes as values instance, D_hat, epsilon, and returns a set of vectors such that each vector N
 in [n]^L and satisfies \sum_{p=1}^L N(p) * (1 + epsilon)^p <= (1 + epsilon) * D_hat
 """
-
-from math import *
-import numpy as np
-from itertools import *
-
 
 def get_max_vec(instace,epsilon): # return the vector corresponds to the instance
     cr_list = [plane[0] for plane in instance] # list of consumption rate
@@ -20,17 +15,17 @@ def get_max_vec(instace,epsilon): # return the vector corresponds to the instanc
     class_list = [] #records the type of each plane
     N = [] # number of planes for each class
     for j in range(len(instance)):
-        #print(cr_list[j],log(cr_list[j],1+epsilon))
         class_list.append(floor(log(cr_list[j],1+epsilon))) #plane -> class
     for i in range(r):
         N.append(class_list.count(i))
     return N
 
-def get_appx_state_vecs(epsilon, D_hat, N): # biggest vector N is used for boundness
+def get_appx_state_vecs(instance,epsilon, D_hat): # biggest vector N is used for boundness
     '''requires 
     from itertools import *
     import numpy as np
     '''
+    N = get_max_vec(instance,epsilon)
     # generate all vectors precedes N
     L = len(N)
     appx_state_vecs = []
@@ -56,8 +51,3 @@ def get_appx_state_vecs(epsilon, D_hat, N): # biggest vector N is used for bound
         else:
             count += 1
     return appx_state_vecs
-
-instance = [(1,20),(2,10),(4,5)]
-epsilon = sqrt(2)-1
-print(get_max_vec(instance,epsilon))
-print(get_appx_state_vecs(epsilon, D_hat, N))
