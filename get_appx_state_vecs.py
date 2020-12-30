@@ -20,7 +20,7 @@ def get_max_vec(instace,epsilon): # return the vector corresponds to the instanc
         N.append(class_list.count(i))
     return N
 
-def get_appx_state_vecs(instance,epsilon, D_hat): # biggest vector N is used for boundness
+def get_appx_state_vecs(instance,epsilon, D_hat): # generate all state vectors precedes the biggest vector N and bounded by D_hat
     '''requires 
     from itertools import *
     import numpy as np
