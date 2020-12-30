@@ -3,9 +3,7 @@
 """
 Created on Thu Dec 10 23:24:47 2020
 
-"""
-
-"""
+@author: binyao
 
 This function takes as input an instance of the airplane refueling problem,
 and a value epsilon 
