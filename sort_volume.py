@@ -10,7 +10,7 @@ def sort_volume(instance,epsilon):
     volume_list = [plane[1] for plane in instance]
     cr_list = [plane[0] for plane in instance] # list of consumption rate
     r = math.ceil(math.log(max(cr_list),1+epsilon))
-    #print('r='+str(r))
+    print('r='+str(r))
     class_list = [] #records the type of each plane
     for j in range(len(instance)):
         class_list.append(math.floor(math.log(cr_list[j],1+epsilon))) #plane -> class
@@ -35,4 +35,3 @@ def sort_volume(instance,epsilon):
     for i in sorted(sorted_volume):
         class_volume_sorted[i] = sorted_volume[i]
     return class_volume_sorted
-
