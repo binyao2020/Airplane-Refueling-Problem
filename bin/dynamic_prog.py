@@ -1,9 +1,9 @@
 def dynamic_prog(instance,epsilon):
-    instance_dict = sort_volume(instance,epsilon)
-    apx_vec_list = get_apx_vecs(instance,epsilon)
-    val_list = [0 for apx_vec in apx_vec_list] # stores the value for each vector
-    pred_list = [0 for apx_vec in apx_vec_list] # stores the index of predecessor for each vector
-    total_cr_list = [0 for apx_vec in apx_vec_list]
+    instance_dict = sort_volume(instance,epsilon) # the dictionary that stores the information of each class with decreasing volume
+    apx_vec_list = get_apx_vecs(instance,epsilon) # list of all approximate vectors
+    val_list = [0 for apx_vec in apx_vec_list] # stores the value for each vector # value of each vector
+    pred_list = [0 for apx_vec in apx_vec_list] # stores the index of predecessor for each vector # index of predecessor of each vector
+    total_cr_list = [0 for apx_vec in apx_vec_list] # total consumption rate of each vector
     for i in range(len(apx_vec_list)):
         for j in range(i):
             vec = apx_vec_list[i]
