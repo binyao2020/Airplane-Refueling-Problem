@@ -13,7 +13,7 @@ def sort_volume(instance,epsilon):
     print('r='+str(r))
     class_list = [] #records the type of each plane
     for j in range(len(instance)):
-        class_list.append(math.floor(math.log(cr_list[j],1+epsilon))) #plane -> class
+        class_list.append(math.floor(math.log(cr_list[j],1+epsilon))-1) #plane -> class
     sorted_volume = {}
     #assign each plane to a class in a dict
     for i in range(len(class_list)):
