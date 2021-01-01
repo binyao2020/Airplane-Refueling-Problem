@@ -1,4 +1,4 @@
-def get_apx_vecs(instance,epsilon):
+def get_apx_vecs(instance,epsilon): # return a set of all approximate vectors
     cr_list = [plane[0] for plane in instance] # list of consumption rate
     r = ceil(log(max(cr_list),1+epsilon)) # number of classes
     N = get_max_vec(instance,epsilon)
