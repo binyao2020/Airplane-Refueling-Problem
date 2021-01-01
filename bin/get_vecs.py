@@ -1,4 +1,4 @@
-def get_vecs(instance,epsilon): # generate all state vectors precedes the biggest vector N and bounded by D_hat
+def get_vecs(instance,epsilon): # generate all state vectors precedes the biggest vector N
     '''requires 
     from itertools import *
     import numpy as np
