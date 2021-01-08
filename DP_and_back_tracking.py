@@ -9,7 +9,7 @@ import numpy as np
 
 def Dynamic_Program(F, i, T, num_class, epsilon, sorted_instance):
     T_new = {}
-    for vec_i in F[i]:
+    for vec_i in F[i] - F[i-1]:
         feasible = []
         for vec_i_1 in F[i-1]:
             for j in range(num_class):
