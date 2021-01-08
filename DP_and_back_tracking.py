@@ -62,7 +62,7 @@ def back_tracking(num_buckets, num_class, F, T_record, N_L):
         if i == num_buckets:
             N_i = N_L
             feasible = []
-            for vec_i_1 in F[i-1]:
+            for vec_i_1 in F[i-2]:
                 for j in range(num_class):
                     if N_i[j] < vec_i_1[j]:
                         break
@@ -78,7 +78,7 @@ def back_tracking(num_buckets, num_class, F, T_record, N_L):
         else:
             N_i = N_i_1
             feasible = []
-            for vec_i_1 in F[i-1]:
+            for vec_i_1 in F[i-2]:
                 for j in range(num_class):
                     if N_i[j] < vec_i_1[j]:
                         break
