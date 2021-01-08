@@ -9,7 +9,7 @@ This function takes as values instance, D_hat, epsilon, and returns a set of vec
 in [n]^L and satisfies \sum_{p=1}^L N(p) * (1 + epsilon)^p <= (1 + epsilon) * D_hat
 """
 
-def get_max_vec(instace,epsilon): # return the vector corresponds to the structured instance
+def get_max_vec(instance,epsilon): # return the vector corresponds to the structured instance
     cr_list = [plane[0] for plane in instance] # list of consumption rate
     r = max(ceil(log(max(cr_list),1+epsilon)),1) # number of classes
     class_list = [] #records the type of each plane
