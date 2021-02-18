@@ -12,6 +12,8 @@ It returns a structured instance of the airplane refueling problem based on epsi
 
 """
 
+from math import *
+
 def get_structured_instance(instance, epsilon):
     structured_instance = []
     for plane in instance:
