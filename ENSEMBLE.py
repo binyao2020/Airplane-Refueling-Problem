@@ -77,5 +77,11 @@ def generate_vectors(instance,epsilon,bound=inf):
                 count += 1
     return vec_list
 
+n = 25
+sigma = 1
+seed = 0
 epsilon = sqrt(2)-1
-instance = generate_instance(25,1,2)
+bound = 1000
+instance = generate_instance(n,sigma,seed)
+N,class_list = get_structured_instance(instance, epsilon)
+vec_list = generate_vectors(instance,epsilon)
