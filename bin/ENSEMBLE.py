@@ -24,51 +24,26 @@ def generate_instance(n, sigma, seed):
     return instance
 
 def get_structured_instance(instance, epsilon):
-    structured_instance = []
-    for plane in instance:
-        rounded_cr = (1+epsilon)**(floor(log(plane[0],1+epsilon))+1)
-        structured_instance.append((rounded_cr,plane[1]))
-    return structured_instance
-
-def sort_volume(instance,epsilon):
-    volume_list = [plane[1] for plane in instance]
-    cr_list = [plane[0] for plane in instance] # list of consumption rate
-    r = ceil(log(max(cr_list),1+epsilon))
-    class_list = [] #records the type of each plane
-    for j in range(len(instance)):
-        class_list.append(math.floor(math.log(cr_list[j],1+epsilon))-1) #plane -> class
-    sorted_volume = {}
-    #assign each plane to a class in a dict
-    for i in range(len(class_list)):
-        if class_list[i] not in sorted_volume:
-            sorted_volume[class_list[i]] = [(i,volume_list[i])]
-        else:
-            pre = sorted_volume[class_list[i]]
-            pre.append((i,volume_list[i]))
-            sorted_volume[class_list[i]] = pre
-    #sort by volume
-    def takeSecond(elem):
-        return elem[1]
-    for i in sorted_volume:
-        v = sorted_volume[i]
-        v.sort(key=takeSecond,reverse=True)
-        sorted_volume[i] = v
-    #sort the class from 0 to r
-    class_volume_sorted = {}
-    for i in sorted(sorted_volume):
-        class_volume_sorted[i] = sorted_volume[i]
-    return class_volume_sorted
-
-def get_max_vec(instace,epsilon): # return the vector corresponds to the structured instance
-    cr_list = [plane[0] for plane in instance] # list of consumption rate
-    r = ceil(log(max(cr_list),1+epsilon)) # number of classes
-    class_list = [] #records the type of each plane
-    N = [] # number of planes for each class
-    for j in range(len(instance)):
-        class_list.append(floor(log(cr_list[j],1+epsilon))) #plane -> class
-    for i in range(r):
-        N.append(class_list.count(i))
-    return N
+    """
+    round up the consumption rate to nearest power of 1+epsilon
+    return a vector and a list
+    vector N: number of planes in each class
+    list class_list: The ith item is a list includes the index of all planes in class i with volume sorted in descend order.
+    """
+    L = floor(log(max(instance[i][0] for i in range(len(instance))),1+epsilon))+1 # number of classes
+    class_list = [[] for _ in range(L+1)]
+    for idx in range(len(instance)):
+        class_list[floor(log(instance[idx][0],1+epsilon))+1].append(idx)
+    print(class_list)
+    for idx in range(1,L+1): # C_1,...,C_L
+        plane_list = class_list[idx]
+        if len(plane_list) > 0:
+            volume_list = [(plane_list[i],instance[plane_list[i]][1]) for i in range(len(plane_list))] # list of tuples (index,volume)
+            volume_list = sorted(volume_list,key=lambda x:x[1],reverse=True)
+            class_list[idx] = [volume_list[i][0] for i in range(len(volume_list))]
+    class_list.pop(0)
+    N = [len(class_list[i]) for i in range(len(class_list))]
+    return N, class_list  
 
 def get_vecs(instance,epsilon): # generate all state vectors precedes the biggest vector N and bounded by D_hat
     '''requires 
@@ -144,5 +119,3 @@ def dynamic_prog(instance,epsilon):
 
 epsilon = sqrt(2)-1
 instance = generate_instance(25,1,2)
-s_instance = get_structured_instance(instance, epsilon)
-print(get_apx_vecs(s_instance,epsilon))
