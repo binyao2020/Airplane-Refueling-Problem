@@ -75,6 +75,7 @@ def generate_vectors(instance,epsilon,LB=0,UB=inf):
             else:
                 count += 1
     return vec_list
+
 n = 25
 sigma = 1
 seed = 0
