@@ -2,17 +2,20 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Dec 31 21:34:28 2020
-
 @author: binyao
 """
 
-import math
-from gurobipy import *
+from math import *
 from itertools import *
 import numpy as np
 import time
 
-def generate_instance(n, sigma, seed):
+def generate_instance(n, sigma, seed): 
+    """
+    generate an instance with n planes where consumption rates c are integers
+    randomly sampled between 1 and 100, and volumes v are correlated with c given by sigma
+    return a list of tuples (c,v)
+    """
     np.random.seed(seed)
     p = list(np.random.randint(1,101,n))
     instance = []
@@ -23,14 +26,14 @@ def generate_instance(n, sigma, seed):
 def get_structured_instance(instance, epsilon):
     structured_instance = []
     for plane in instance:
-        rounded_cr = (1+epsilon)**(math.floor(math.log(plane[0],1+epsilon))+1)
+        rounded_cr = (1+epsilon)**(floor(log(plane[0],1+epsilon))+1)
         structured_instance.append((rounded_cr,plane[1]))
     return structured_instance
 
 def sort_volume(instance,epsilon):
     volume_list = [plane[1] for plane in instance]
     cr_list = [plane[0] for plane in instance] # list of consumption rate
-    r = math.ceil(math.log(max(cr_list),1+epsilon))
+    r = ceil(log(max(cr_list),1+epsilon))
     class_list = [] #records the type of each plane
     for j in range(len(instance)):
         class_list.append(math.floor(math.log(cr_list[j],1+epsilon))-1) #plane -> class
@@ -139,7 +142,7 @@ def dynamic_prog(instance,epsilon):
                     total_cr_list[i] = u
     return val_list,pred_list
 
-epsilon = math.sqrt(2)-1
+epsilon = sqrt(2)-1
 instance = generate_instance(25,1,2)
 s_instance = get_structured_instance(instance, epsilon)
 print(get_apx_vecs(s_instance,epsilon))
