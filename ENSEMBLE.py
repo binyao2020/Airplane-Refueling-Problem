@@ -95,7 +95,7 @@ def generate_apx_vectors(N, epsilon, bucket):
                 k_list.append(combine)
     apx_vec_list = []
     for k in k_list:
-        vec = [floor(alpha*k[p]/(1+epsilon)**p) for p in range(L)]
+        vec = [min(N[p],floor(alpha*k[p]/(1+epsilon)**p)) for p in range(L)]
         if vec not in apx_vec_list:
             apx_vec_list.append(vec)
     return apx_vec_list
