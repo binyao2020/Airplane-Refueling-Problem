@@ -43,30 +43,27 @@ def get_structured_instance(instance, epsilon):
             class_list[idx] = [volume_list[i][0] for i in range(len(volume_list))]
     class_list.pop(0)
     N = [len(class_list[i]) for i in range(len(class_list))]
-    return N, class_list  
-
-def generate_vectors(instance,epsilon,LB=0,UB=inf): 
+    return N, class_list
+  
+def generate_vectors(N, epsilon, LB=0, UB=inf, bucket=-1): 
     """
     generate all state vectors precedes the biggest vector N, and bounded by LB and UB (set to 0 and infinite by default)
     return vec_list
+    if you want to generate F_i, set bucket=i
     """
-    # generate all vectors precedes N
+    if bucket != -1:
+        UB = (1+epsilon)**bucket
     L = len(N)
-    vec_list = []
-    cr_list = np.array([(1+epsilon)**i for i in range(1,L+1)]) # list of consumption rate for each class\
-    vec_list = list(range(N[0]+1)) # initialization
+    cr_list = [(1+epsilon)**i for i in range(1,L+1)] 
+    vec_list = [[i] for i in range(N[0]+1)] 
     for i in range(1,L):
-        l = list(range(N[i]+1))
+        l = [[i] for i in range(N[i]+1)]
         vec_list = list(product(vec_list,l))
         for j in range(len(vec_list)):
-            if i == 1:
-                tp1 = (vec_list[j][0],)
-            else:
-                tp1 = vec_list[j][0] 
-            tp2 = (vec_list[j][1],)
-            vec_list[j] = tp1+tp2 
+            l1 = vec_list[j][0]
+            l2 = vec_list[j][1]
+            vec_list[j] = l1+l2 
     count = 0
-    # remove vectors that exceeds the bound
     if UB < inf:
         for j in range(len(vec_list)):
             total = np.dot(vec_list[count],cr_list)
@@ -76,11 +73,42 @@ def generate_vectors(instance,epsilon,LB=0,UB=inf):
                 count += 1
     return vec_list
 
+def generate_apx_vectors(N, epsilon, bucket):
+    """
+    generate all approximate state vectors of bucket F_i
+    """
+    L = len(N)
+    D = (1+epsilon)**bucket
+    tilde_D = 2**ceil(log(D,2))
+    alpha = epsilon*tilde_D/L
+    K = int((1+epsilon)/epsilon*L) # sum(k_i)<=K
+    candidate = [list(set([min(K,ceil(j*(1+epsilon)**p/alpha)) for j in range(N[p]+1)])) for p in range(L)]
+    ########### generate all non-negative integer solutions of sum(k_i)<=K
+    k_list = [[k] for k in candidate[0]]
+    for i in range(1,L):
+        l = [[k] for k in candidate[i]]
+        new_list = list(product(k_list,l))
+        k_list = []
+        for pair in new_list:
+            combine = pair[0]+pair[1]
+            if sum(combine) <= K:
+                k_list.append(combine)
+    apx_vec_list = []
+    for k in k_list:
+        vec = [floor(alpha*k[p]/(1+epsilon)**p) for p in range(L)]
+        if vec not in apx_vec_list:
+            apx_vec_list.append(vec)
+    return apx_vec_list
+
 n = 25
 sigma = 1
 seed = 0
 epsilon = sqrt(2)-1
 bound = 1000
+bucket = 10
 instance = generate_instance(n,sigma,seed)
-N,class_list = get_structured_instance(instance, epsilon)
-vec_list = generate_vectors(instance,epsilon)
+N,class_list = get_structured_instance(instance,epsilon)
+vec_list = generate_vectors(N,epsilon)
+cr_list = [(1+epsilon)**i for i in range(1,len(N)+1)] 
+bucket = ceil(log(1+epsilon,np.dot(N,cr_list)))
+apx_vec_list = generate_apx_vectors(N,epsilon,bucket)
